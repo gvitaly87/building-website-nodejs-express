@@ -3,7 +3,7 @@ const express = require('express');
 const router = express.Router();
 
 module.exports = (params) => {
-  //Destructuring assignment
+  // Destructuring assignment
   const { speakersService } = params;
 
   router.get('/', async (req, res) => {
