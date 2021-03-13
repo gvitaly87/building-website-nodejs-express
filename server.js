@@ -1,12 +1,17 @@
 require('dotenv').config();
 
 const express = require('express');
-
-const app = express();
-
 const path = require('path');
 
+const FeedbackService = require('./services/FeedbackService');
+const SpeakersService = require('./services/SpeakerService');
+
+const feedbackService = new FeedbackService('./data/feedback.json');
+const speakersService = new SpeakersService('./data/speakers.json');
+
 const routes = require('./routes');
+
+const app = express();
 
 // Read the host address and the port from the environment
 const hostname = process.env.HOST;
@@ -21,7 +26,13 @@ app.set('views', path.join(__dirname, './views'));
 app.use(express.static(path.join(__dirname, './static')));
 
 // Set up a dedicated routing infrastructure
-app.use('/', routes());
+app.use(
+  '/',
+  routes({
+    feedbackService,
+    speakersService,
+  })
+);
 
 // 404 Not Found page.
 // app.use((req, res) => res.status(404).redirect('404.html'));
